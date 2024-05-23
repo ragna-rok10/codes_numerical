@@ -52,8 +52,8 @@ for i in range(1, n):
 print(f"\nVALUE OF u IS: {round(u, 6)}")
 print(f"VALUE AT {value} IS: {round(sum, 6)}")
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#NEWTON'S BACKWARD INTERPOLATION
 import numpy as np
-
 n = int(input("ENTER THE NUMBER OF DATA POINTS: "))
 x = np.zeros((n))
 y = np.zeros((n, n))
@@ -131,11 +131,9 @@ step = int(input('NUMBER OF STEPS = '))
 #EULER METHOD CALL.
 euler(x0,y0,xn,step)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# FUNCTION TO BE SOLVED
+# RUNGE-KUTTA (RK4) METHOD
 def f(x, y):
     return x-y
-
-# RUNGE-KUTTA (RK4) METHOD
 def runge_kutta(x0, y0, xn, n):
     # CALCULATING STEP SIZE.
     h = (xn - x0) / n
@@ -171,3 +169,71 @@ step = int(input('NUMBER OF STEPS = '))
 # RUNGE-KUTTA METHOD CALL.
 runge_kutta(x0, y0, xn, step)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#simpson's 1/3rd method
+import math
+def f(x):
+    return 1 / (1 + x ** 2)
+
+def simpsons_one_third(x0, xn, n):
+    # Ensure that n is even
+    if n % 2 != 0:
+        raise ValueError("Number of sub-intervals must be even for Simpson's 1/3rd rule.")
+    
+    h = (xn - x0) / n
+    integration = f(x0) + f(xn)
+    
+    for i in range(1, n):
+        k = x0 + i * h
+        if i % 2 == 0:
+            integration += 2 * f(k)
+        else:
+            integration += 4 * f(k)
+    
+    integration *= h / 3
+    return integration
+
+# Input validation loop to ensure valid numerical input
+while True:
+    try:
+        lower_limit = float(input("ENTER THE LOWER LIMIT OF THE INTEGRATION: "))
+        upper_limit = float(input("ENTER THE UPPER LIMIT OF THE INTEGRATION: "))
+        sub_intervals = int(input("ENTER THE NUMBER OF SUB INTERVALS (must be even): "))
+        
+        # Check if the number of sub-intervals is even
+        if sub_intervals % 2 != 0:
+            print("The number of sub-intervals must be even. Please try again.")
+            continue
+        
+        result = simpsons_one_third(lower_limit, upper_limit, sub_intervals)
+        print("INTEGRATION RESULT BY SIMPSON'S 1/3rd METHOD IS: %0.6f" % result)
+        break  # Exit the loop if input and computation are successful
+    except ValueError as e:
+        print(f"Invalid input! {str(e)}. Please enter a valid numerical value.")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# TRAPEZIODAL METHOD.
+import math
+def f(x):
+    return 1 / (1 + x ** 2)
+
+def trapezoidal(x0, xn, n):
+    h = (xn - x0) / n
+    integration = f(x0) + f(xn)
+    for i in range(1, n):
+        k = x0 + i * h
+        integration += 2 * f(k)
+    integration *= h / 2
+    return integration
+
+# Input validation loop to ensure valid numerical input
+while True:
+    try:
+        lower_limit = float(input("ENTER THE LOWER LIMIT OF THE INTEGRATION: "))
+        upper_limit = float(input("ENTER THE UPPER LIMIT OF THE INTEGRATION: "))
+        sub_intervals = int(input("ENTER THE NUMBER OF SUB INTERVALS: "))
+        result = trapezoidal(lower_limit, upper_limit, sub_intervals)
+        print("INTEGRATION RESULT BY TRAPEZOIDAL METHOD IS: %0.6f" % result)
+        break  # Exit the loop if input and computation are successful
+    except ValueError:
+        print("Invalid input! Please enter a valid numerical value.")
+
+
